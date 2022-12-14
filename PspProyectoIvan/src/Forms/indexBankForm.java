@@ -1,8 +1,12 @@
 package Forms;
 
+import Bdd.BdKutxaBank;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.awt.event.ActionListener; // seems to be missing.
@@ -20,6 +24,7 @@ public class indexBankForm extends JFrame {
     private JLabel CLAVE;
     private JButton buttonDel;
     private JButton btnIniciar;
+    private JButton buttonRegistrarse;
 
     public indexBankForm() {
         this.setContentPane(jPanelContainer);
@@ -39,6 +44,15 @@ public class indexBankForm extends JFrame {
                 }
             }
         });
+        buttonRegistrarse.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                RegisterForm r = new RegisterForm();
+                r.setVisible(true);
+                dispose();
+
+            }
+        });
     }
 
 
@@ -46,6 +60,14 @@ public class indexBankForm extends JFrame {
 
         indexBankForm f = new indexBankForm();
         f.setVisible(true);
+        Connection bdConnection =   BdKutxaBank.Conection();
+
+        try {
+            System.out.println(bdConnection.isClosed());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
 
     }
 
