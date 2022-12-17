@@ -60,14 +60,6 @@ public class indexBankForm extends JFrame {
 
         indexBankForm f = new indexBankForm();
         f.setVisible(true);
-        Connection bdConnection =   BdKutxaBank.Conection();
-
-        try {
-            System.out.println(bdConnection.isClosed());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
 
     }
 

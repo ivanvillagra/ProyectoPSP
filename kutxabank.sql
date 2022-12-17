@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `bankaccounts` (
   `idUser` bigint NOT NULL,
   PRIMARY KEY (`idBA`),
   KEY `fk_iduser_bankaccount` (`idUser`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ;
 
 -- --------------------------------------------------------
 
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `transactions` (
   PRIMARY KEY (`idTrans`),
   KEY `idAcountEnd` (`idAcountEnd`),
   KEY `idAcountStart` (`idAcountStart`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ;
 
 -- --------------------------------------------------------
 
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `DNI` varchar(9) NOT NULL,
   PRIMARY KEY (`idUser`),
   UNIQUE KEY `unique_dni` (`DNI`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ;
 
 --
 -- Restricciones para tablas volcadas

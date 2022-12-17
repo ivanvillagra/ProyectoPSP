@@ -1,8 +1,10 @@
 package Server;
 
+import Clases.User;
+
 import java.io.*;
 import java.net.Socket;
-
+import Bdd.BdKutxaBank;
 public class threadPetitions extends Thread{
 
    private Socket client;
@@ -16,28 +18,43 @@ public class threadPetitions extends Thread{
    @Override
     public void run() {
        try {
-           DataInputStream is = new DataInputStream(client.getInputStream());
 
-           DataOutputStream os = new DataOutputStream(client.getOutputStream());
+           ObjectOutputStream os = new ObjectOutputStream(client.getOutputStream());
 
-           String petition = is.readUTF();
+           ObjectInputStream is = new ObjectInputStream(client.getInputStream());
+
+
+
+           String petition = (String) is.readObject();
+
            System.out.println(petition);
-
-           switch (petition){
+           switch (petition) {
                //registro
                case "register" :
-                   os.writeUTF("registrao");
+                   User newUser = (User) is.readObject();
+                   Registro(newUser, os);
                    break;
 
                //login
                case "login" :
-                   os.writeUTF("login");
                    break;
            }
 
        } catch (IOException e) {
            throw new RuntimeException(e);
+       } catch (ClassNotFoundException e) {
+           e.printStackTrace();
        }
+   }
+
+   private static void Registro(User newUser,ObjectOutputStream os) throws IOException {
+
+       if (BdKutxaBank.InsertUser(newUser)){
+            os.writeObject(true);
+       }else {
+            os.writeObject(false);
+       }
+
    }
 
 }

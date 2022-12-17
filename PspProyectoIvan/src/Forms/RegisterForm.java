@@ -1,10 +1,15 @@
 package Forms;
 
+import Clases.User;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
+import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RegisterForm extends JFrame {
     private JButton buttonRegitro;
@@ -37,18 +42,62 @@ public class RegisterForm extends JFrame {
         buttonRegitro.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Socket socket = null;
                 try {
-                    Socket socket = new Socket("localhost",6868);
-                    DataInputStream is = new DataInputStream(socket.getInputStream());
-                    DataOutputStream os = new DataOutputStream(socket.getOutputStream());
-                    os.writeUTF("register");
-                    String mensaje = is.readUTF();
-                    System.out.println(mensaje);
-                    socket.close();
-
+                    socket = new Socket("localhost",6868);
                 } catch (IOException ex) {
-                    throw new RuntimeException(ex);
+                    ex.printStackTrace();
                 }
+                try {
+                    assert socket != null;
+                    ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+                    ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
+
+                    Pattern pattern1 = Pattern.compile("[a-zA-Z]+", Pattern.CASE_INSENSITIVE);
+                    Matcher matcher1 = pattern1.matcher(textFieldNombre.getText());
+                    boolean matchFound = matcher1.find();
+
+                    Pattern pattern2 = Pattern.compile("[a-zA-Z]+", Pattern.CASE_INSENSITIVE);
+                    Matcher matcher2 = pattern2.matcher(textFieldApellido.getText());
+                    boolean matchFound2 = matcher2.find();
+
+                    Pattern pattern3 = Pattern.compile("[0-9]{8}[A-Za-z]{1}", Pattern.CASE_INSENSITIVE);
+                    Matcher matcher3 = pattern3.matcher(textFieldDni.getText());
+                    boolean matchFound3 = matcher3.find();
+
+                    os.writeObject("register");
+
+
+                    if(matchFound && matchFound2 && matchFound3) {
+                        Random rnd = new Random();
+                        String pass = String.format("%06d", rnd.nextInt(999999));
+                        User newUser = new User(textFieldNombre.getText(),textFieldDni.getText(), textFieldApellido.getText(), pass);
+
+                        os.writeObject(newUser);
+                        if((boolean)is.readObject()){
+
+                            indexBankForm inx = new indexBankForm();
+                            inx.setVisible(true);
+                            dispose();
+
+                        }else {
+                            JOptionPane.showMessageDialog(null,"Error al registrar");
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null,"Error al registrar");
+                    }
+
+
+
+                } catch (IOException | ClassNotFoundException ex) {
+                    ex.printStackTrace();
+                }
+                try {
+                    socket.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+
             }
         });
     }

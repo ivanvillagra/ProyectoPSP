@@ -11,11 +11,11 @@ public class User implements Serializable {
     private  String dni;
     private  String surName;
 
-    private  int pass;
+    private  String pass;
 
     private  List<Acount> acountList = new ArrayList<>();
 
-    public User(String name, String dni, String surName, int pass) {
+    public User(String name, String dni, String surName, String pass) {
         this.name = name;
         this.dni = dni;
         this.surName = surName;
@@ -58,11 +58,11 @@ public class User implements Serializable {
         return this;
     }
 
-    public int pass() {
+    public String pass() {
         return pass;
     }
 
-    public User setPass(int pass) {
+    public User setPass(String pass) {
         this.pass = pass;
         return this;
     }
