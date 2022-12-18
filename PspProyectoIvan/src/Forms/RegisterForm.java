@@ -76,6 +76,7 @@ public class RegisterForm extends JFrame {
                         os.writeObject(newUser);
                         if((boolean)is.readObject()){
 
+                            socket.close();
                             indexBankForm inx = new indexBankForm();
                             inx.setVisible(true);
                             dispose();

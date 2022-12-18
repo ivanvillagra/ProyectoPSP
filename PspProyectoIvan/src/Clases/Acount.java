@@ -13,6 +13,14 @@ public class Acount implements Serializable {
 
     private User user;
 
+
+    public Acount(long idBA,String iban, double balance) {
+        this.idBA = idBA;
+        this.iban = iban;
+        this.balance = balance;
+    }
+
+
     public Acount(String iban, double balance, User user) {
         this.iban = iban;
         this.balance = balance;

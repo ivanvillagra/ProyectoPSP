@@ -94,7 +94,7 @@ public class indexBankForm extends JFrame {
                         User loginUser = (User)is.readObject();
                         if(loginUser!=null){
 
-
+                            socket.close();
                             MovimientosForm mv = new MovimientosForm(loginUser);
                             mv.setVisible(true);
                             dispose();

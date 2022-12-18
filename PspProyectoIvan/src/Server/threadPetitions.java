@@ -1,10 +1,12 @@
 package Server;
 
+import Clases.Acount;
 import Clases.User;
 
 import java.io.*;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.util.List;
 
 import Bdd.BdKutxaBank;
 public class threadPetitions extends Thread{
@@ -42,6 +44,13 @@ public class threadPetitions extends Thread{
                    User userLog = (User) is.readObject();
                    Login(userLog, os);
                    break;
+
+               case "getAcounts":
+                   User userAcount = (User) is.readObject();
+                   System.out.println(userAcount.idUser());
+                   getAcountsOfUser(userAcount,os);
+                   break;
+
            }
 
        } catch (IOException e) {
@@ -71,6 +80,15 @@ public class threadPetitions extends Thread{
                os.writeObject(null);
            }
 
+   }
+
+   private static void getAcountsOfUser(User user,ObjectOutputStream os) throws SQLException, IOException {
+       List<Acount> listAcounts = BdKutxaBank.acountListOfUser(user);
+       if (listAcounts!=null){
+           os.writeObject(listAcounts);
+       }else {
+           os.writeObject(null);
+       }
    }
 
 }

@@ -1,5 +1,6 @@
 package Bdd;
 
+import Clases.Acount;
 import Clases.User;
 import com.mysql.jdbc.Statement;
 
@@ -8,7 +9,9 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.RecursiveTask;
 
@@ -159,6 +162,45 @@ public class BdKutxaBank {
         }
     }
 
+    public boolean  IngresarDinero(double dinero){
+        Connection bd = conection();
+
+        return false;
+    }
+
+    public boolean  RetirarDinero(){
+
+        return true;
+    }
+
+
+    public static List<Acount> acountListOfUser(User user) throws SQLException {
+
+        List<Acount> listaAciunts = new ArrayList<>();
+        Connection bd = conection();
+
+        try {
+
+            String query = " SELECT  * from bankaccounts WHERE idUser = ?";
+            assert bd != null;
+            PreparedStatement preparedStmt = bd.prepareStatement(query);
+            preparedStmt.setLong (1, user.idUser());
+            ResultSet rs  = preparedStmt.executeQuery();
+
+            while (rs.next()){
+
+                listaAciunts.add(new Acount(rs.getLong(1),rs.getString(2),rs.getDouble(3)));
+
+            }
+
+
+            bd.close();
+            return listaAciunts;
+        }catch (Exception ex) {
+            bd.close();
+            return null;
+        }
+    }
 
         public static String getMd5(String input)
     {
