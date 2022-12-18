@@ -15,6 +15,16 @@ public class User implements Serializable {
 
     private  List<Acount> acountList = new ArrayList<>();
 
+
+    public User() {
+    }
+
+    public User(String dni, String pass) {
+        this.dni = dni;
+        this.pass = pass;
+    }
+
+
     public User(String name, String dni, String surName, String pass) {
         this.name = name;
         this.dni = dni;

@@ -1,15 +1,23 @@
 package Forms;
 
 import Bdd.BdKutxaBank;
+import Clases.User;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.awt.event.ActionListener; // seems to be missing.
+import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class indexBankForm extends JFrame {
@@ -51,6 +59,64 @@ public class indexBankForm extends JFrame {
                 r.setVisible(true);
                 dispose();
 
+            }
+        });
+        btnIniciar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Socket socket = null;
+                try {
+                    socket = new Socket("localhost",6868);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                try {
+                    assert socket != null;
+                    ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+                    ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
+
+                    Pattern pattern1 = Pattern.compile("[0-9]{8}[A-Za-z]{1}", Pattern.CASE_INSENSITIVE);
+                    Matcher matcher1 = pattern1.matcher(textFieldNIF.getText());
+                    boolean matchFound = matcher1.find();
+
+                    Pattern pattern2 = Pattern.compile("[0-9]{6}", Pattern.CASE_INSENSITIVE);
+                    Matcher matcher2 = pattern2.matcher(jpassword.getText());
+                    boolean matchFound2 = matcher2.find();
+
+
+                    os.writeObject("login");
+
+
+                    if(matchFound && matchFound2) {
+                        User newUser = new User( textFieldNIF.getText() , jpassword.getText());
+
+                        os.writeObject(newUser);
+                        User loginUser = (User)is.readObject();
+                        if(loginUser!=null){
+
+
+                            MovimientosForm mv = new MovimientosForm(loginUser);
+                            mv.setVisible(true);
+                            dispose();
+
+
+                        }else {
+                            JOptionPane.showMessageDialog(null,"Error al iniciar sesion");
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null,"Error al iniciar sesion");
+                    }
+
+
+
+                } catch (IOException | ClassNotFoundException ex) {
+                    ex.printStackTrace();
+                }
+                try {
+                    socket.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             }
         });
     }

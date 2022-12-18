@@ -4,6 +4,8 @@ import Clases.User;
 
 import java.io.*;
 import java.net.Socket;
+import java.sql.SQLException;
+
 import Bdd.BdKutxaBank;
 public class threadPetitions extends Thread{
 
@@ -37,12 +39,16 @@ public class threadPetitions extends Thread{
 
                //login
                case "login" :
+                   User userLog = (User) is.readObject();
+                   Login(userLog, os);
                    break;
            }
 
        } catch (IOException e) {
            throw new RuntimeException(e);
        } catch (ClassNotFoundException e) {
+           e.printStackTrace();
+       } catch (SQLException e) {
            e.printStackTrace();
        }
    }
@@ -54,6 +60,16 @@ public class threadPetitions extends Thread{
        }else {
             os.writeObject(false);
        }
+
+   }
+
+   private static void Login(User user,ObjectOutputStream os) throws IOException, SQLException {
+        User  userLogin = BdKutxaBank.InicioSesion(user);
+           if (userLogin!=null){
+               os.writeObject(userLogin);
+           }else {
+               os.writeObject(null);
+           }
 
    }
 

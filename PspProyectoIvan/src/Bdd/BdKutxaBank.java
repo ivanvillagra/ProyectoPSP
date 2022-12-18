@@ -10,6 +10,7 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.concurrent.RecursiveTask;
 
 public class BdKutxaBank {
 
@@ -34,8 +35,8 @@ public class BdKutxaBank {
 
             Connection bd = conection();
 
-            String query = " insert into users (Name, Surname, pass, DNI)"
-                    + " values (?, ?, ?, ?)";
+            String query = " insert into users (Name, Surname, pass, DNI, passVer)"
+                    + " values (?, ?, ?, ?, ?)";
 
             assert bd != null;
             PreparedStatement preparedStmt = bd.prepareStatement(query);
@@ -46,6 +47,7 @@ public class BdKutxaBank {
 
             preparedStmt.setString (3, getMd5(newUser.pass()));
             preparedStmt.setString(4, newUser.dni());
+            preparedStmt.setString(5, newUser.pass());
 
 
             preparedStmt.execute();
@@ -56,6 +58,7 @@ public class BdKutxaBank {
 
             return true;
         }catch (Exception e){
+
             return false;
         }
     }
@@ -103,7 +106,7 @@ public class BdKutxaBank {
 
         ResultSet rs = preparedStmt.executeQuery();
 
-        if ( rs.getRow() == 0 )
+        if (rs.getRow() == 0)
         {
             return false;
         }
@@ -114,12 +117,47 @@ public class BdKutxaBank {
     }
 
 
-    public static User InicioSesion(){
+    public static User InicioSesion(User user) throws SQLException {
+
+        User userLogin =null;
+        Connection bd = conection();
+
+        try {
 
 
-        return new User("","","","");
+            String query = " SELECT  IdUser, Name, Surname, pass, DNI FROM users WHERE DNI = ? AND pass = ?";
+            assert bd != null;
+            PreparedStatement preparedStmt = bd.prepareStatement(query);
+            preparedStmt.setString (1, user.dni());
+            preparedStmt.setString (2, getMd5(user.pass()));
 
-    };
+
+            ResultSet rs = preparedStmt.executeQuery();
+
+                    while (rs.next()) {
+                        userLogin = new User();
+                        System.out.println(rs.getRow());
+                        userLogin.setIdUser(rs.getLong(1));
+                        userLogin.setName(rs.getString(2));
+                        userLogin.setSurName(rs.getString(3));
+                        userLogin.setPass(rs.getString(4));
+                        userLogin.setDni(rs.getString(5));
+                        break;
+                    }
+                    bd.close();
+
+                    return userLogin;
+
+
+
+        }catch (Exception ex){
+
+            ex.printStackTrace();
+            bd.close();
+            return null;
+
+        }
+    }
 
 
         public static String getMd5(String input)
