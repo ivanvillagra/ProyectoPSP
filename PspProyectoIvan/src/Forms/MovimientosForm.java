@@ -99,7 +99,7 @@ public class MovimientosForm  extends JFrame{
         btnRetirar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+
             }
         });
     }
