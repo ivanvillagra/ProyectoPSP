@@ -27,6 +27,7 @@ public class MovimientosForm  extends JFrame{
     private JFormattedTextField formattedTextFieldSaldoIngreso;
     private JTextField textFieldIbanDestino;
     private JButton buttonUpdate;
+    private JButton buttonAutoComplete;
 
     public static void  getAcounts() {
         Socket socket = null;
@@ -161,6 +162,12 @@ public class MovimientosForm  extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 getAcounts();
                 llenarCombox();
+            }
+        });
+        buttonAutoComplete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                textFieldIbanDestino.setText(comboBoxCuentas.getSelectedItem().toString());
             }
         });
     }
