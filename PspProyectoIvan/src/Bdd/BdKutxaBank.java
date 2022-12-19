@@ -163,14 +163,24 @@ public class BdKutxaBank {
     }
 
     public static boolean  IgresarDinero(String ibanOrigen,String ibanDestino, Double ingreso) throws SQLException {
-        if (ibanOrigen.equals(ibanDestino)){
-            return false;
-        }
+        String query = "";
         Connection bd = conection();
         try {
-
-            String query = " UPDATE bankaccounts set balance = balance - ? WHERE iban  =  ? ";
             assert bd != null;
+
+            if (ibanOrigen.equals(ibanDestino)){
+                query = " UPDATE bankaccounts set balance = balance + ? WHERE iban  =  ? ";
+                PreparedStatement preparedStmt0 = bd.prepareStatement(query);
+                preparedStmt0.setDouble (1, ingreso);
+                preparedStmt0.setString (2, ibanDestino);
+
+                preparedStmt0.executeUpdate();
+                return true;
+            }
+
+
+
+            query = " UPDATE bankaccounts set balance = balance - ? WHERE iban  =  ? ";
             PreparedStatement preparedStmt = bd.prepareStatement(query);
             preparedStmt.setDouble (1, ingreso);
             preparedStmt.setString (2, ibanOrigen );
