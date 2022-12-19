@@ -1,5 +1,6 @@
 package Forms;
 
+import Clases.FClient;
 import Clases.User;
 
 import javax.swing.*;
@@ -67,27 +68,32 @@ public class RegisterForm extends JFrame {
 
                     os.writeObject("register");
 
+                    boolean firmado = FClient.fClient(is);
 
-                    if(matchFound && matchFound2 && matchFound3) {
-                        Random rnd = new Random();
-                        String pass = String.format("%06d", rnd.nextInt(999999));
-                        User newUser = new User(textFieldNombre.getText(),textFieldDni.getText(), textFieldApellido.getText(), pass);
+                    if(firmado){
+                        JOptionPane.showMessageDialog(null,"Kutxabank firma digital correcta se puede registrar");
+                        if(matchFound && matchFound2 && matchFound3) {
+                            Random rnd = new Random();
+                            String pass = String.format("%06d", rnd.nextInt(999999));
+                            User newUser = new User(textFieldNombre.getText(),textFieldDni.getText(), textFieldApellido.getText(), pass);
 
-                        os.writeObject(newUser);
-                        if((boolean)is.readObject()){
+                            os.writeObject(newUser);
+                            if((boolean)is.readObject()){
 
-                            socket.close();
-                            indexBankForm inx = new indexBankForm();
-                            inx.setVisible(true);
-                            dispose();
+                                socket.close();
+                                indexBankForm inx = new indexBankForm();
+                                inx.setVisible(true);
+                                dispose();
 
-                        }else {
+                            }else {
+                                JOptionPane.showMessageDialog(null,"Error al registrar");
+                            }
+                        } else {
                             JOptionPane.showMessageDialog(null,"Error al registrar");
                         }
-                    } else {
-                        JOptionPane.showMessageDialog(null,"Error al registrar");
+                    }else {
+                        JOptionPane.showMessageDialog(null,"No se pudo Registrar error en la Firma digital de kutxabank intentelo de nuevo");
                     }
-
 
 
                 } catch (IOException | ClassNotFoundException ex) {

@@ -2,6 +2,7 @@ package Server;
 
 import Clases.Acount;
 import Clases.CifradoSimetrico;
+import Clases.FServer;
 import Clases.User;
 
 import java.io.*;
@@ -38,6 +39,7 @@ public class threadPetitions extends Thread{
            switch (petition) {
                //registro
                case "register" :
+                   FServer.fServer(os);
                    User newUser = (User) is.readObject();
                    Registro(newUser, os);
                    break;

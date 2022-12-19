@@ -93,7 +93,7 @@ public class BdKutxaBank {
         }
 
         preparedStmt.setString (1,iban);
-        preparedStmt.setDouble (2, 0);
+        preparedStmt.setDouble (2, 19000);
         preparedStmt.setLong (3, id);
 
       preparedStmt.execute();
