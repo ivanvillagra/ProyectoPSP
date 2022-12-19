@@ -15,7 +15,7 @@ import javax.crypto.spec.SecretKeySpec;
 import Decoder.BASE64Decoder;
 import Decoder.BASE64Encoder;
 
-public class Seguridad  implements Serializable {
+public class CifradoSimetrico implements Serializable {
 
     private SecretKey key;
     private Cipher cipher;

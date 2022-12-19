@@ -1,7 +1,7 @@
 package Server;
 
 import Clases.Acount;
-import Clases.Seguridad;
+import Clases.CifradoSimetrico;
 import Clases.User;
 
 import java.io.*;
@@ -55,7 +55,7 @@ public class threadPetitions extends Thread{
                    break;
 
                case "ingreso":
-                   Seguridad sgr = new Seguridad();
+                   CifradoSimetrico sgr = new CifradoSimetrico();
                    sgr.addKey(generarStringClave());
                    os.writeObject(sgr);
                    String ibanOrigen =  sgr.desencriptar((String) is.readObject()) ;

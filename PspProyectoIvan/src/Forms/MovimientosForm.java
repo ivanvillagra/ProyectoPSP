@@ -1,7 +1,7 @@
 package Forms;
 
 import Clases.Acount;
-import Clases.Seguridad;
+import Clases.CifradoSimetrico;
 import Clases.User;
 
 import javax.swing.*;
@@ -113,7 +113,7 @@ public class MovimientosForm  extends JFrame{
                     ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
 
                     os.writeObject("ingreso");
-                    Seguridad sgr =  (Seguridad) is.readObject();
+                    CifradoSimetrico sgr =  (CifradoSimetrico) is.readObject();
 
                     Pattern pattern1 = Pattern.compile("[a-zA-Z0-9]+", Pattern.CASE_INSENSITIVE);
                     Matcher matcher1 = pattern1.matcher(textFieldIbanDestino.getText());
