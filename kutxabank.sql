@@ -2,10 +2,10 @@
 -- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 17-12-2022 a las 12:35:47
--- Versión del servidor: 8.0.31
--- Versión de PHP: 8.0.26
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 19-12-2022 a las 22:18:25
+-- Versión del servidor: 10.4.24-MariaDB
+-- Versión de PHP: 7.4.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -27,33 +27,21 @@ SET time_zone = "+00:00";
 -- Estructura de tabla para la tabla `bankaccounts`
 --
 
-DROP TABLE IF EXISTS `bankaccounts`;
-CREATE TABLE IF NOT EXISTS `bankaccounts` (
-  `idBA` bigint NOT NULL AUTO_INCREMENT,
+CREATE TABLE `bankaccounts` (
+  `idBA` bigint(20) NOT NULL,
   `iban` varchar(255) NOT NULL,
-  `balance` int NOT NULL,
-  `idUser` bigint NOT NULL,
-  PRIMARY KEY (`idBA`),
-  KEY `fk_iduser_bankaccount` (`idUser`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ;
-
--- --------------------------------------------------------
+  `balance` int(11) NOT NULL,
+  `idUser` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Estructura de tabla para la tabla `transactions`
+-- Volcado de datos para la tabla `bankaccounts`
 --
 
-DROP TABLE IF EXISTS `transactions`;
-CREATE TABLE IF NOT EXISTS `transactions` (
-  `idTrans` bigint NOT NULL AUTO_INCREMENT,
-  `idAcountStart` bigint NOT NULL,
-  `idAcountEnd` bigint NOT NULL,
-  `money` int NOT NULL,
-  `date` date NOT NULL,
-  PRIMARY KEY (`idTrans`),
-  KEY `idAcountEnd` (`idAcountEnd`),
-  KEY `idAcountStart` (`idAcountStart`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ;
+INSERT INTO `bankaccounts` (`idBA`, `iban`, `balance`, `idUser`) VALUES
+(2, 'ES824005236', 911953, 16),
+(3, 'ES814102118', 113300, 18),
+(4, 'ES863759410', 18100, 19);
 
 -- --------------------------------------------------------
 
@@ -61,16 +49,58 @@ CREATE TABLE IF NOT EXISTS `transactions` (
 -- Estructura de tabla para la tabla `users`
 --
 
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE IF NOT EXISTS `users` (
-  `idUser` bigint NOT NULL AUTO_INCREMENT,
+CREATE TABLE `users` (
+  `idUser` bigint(20) NOT NULL,
   `Name` varchar(50) NOT NULL,
   `Surname` varchar(50) NOT NULL,
-  `pass` int NOT NULL,
+  `pass` varchar(255) NOT NULL,
   `DNI` varchar(9) NOT NULL,
-  PRIMARY KEY (`idUser`),
-  UNIQUE KEY `unique_dni` (`DNI`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ;
+  `passVer` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `users`
+--
+
+INSERT INTO `users` (`idUser`, `Name`, `Surname`, `pass`, `DNI`, `passVer`) VALUES
+(15, 'Juan', 'Da Silva', 'd7792ea01be12978c51f26450979310f', '72843606F', ''),
+(16, 'Ivan', 'Villagra', 'a5fdd0f9bc9dd4b6716fc42cb1ee8a30', '72843626F', '815674'),
+(18, 'JON', 'BANDEIRA', 'e18cc01ebb345c3cb94472b1caa731fd', '72845645R', '072599'),
+(19, 'JOn', 'Vazquez', '128cd2903296df61435195c790bba717', '72843555H', '224703');
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `bankaccounts`
+--
+ALTER TABLE `bankaccounts`
+  ADD PRIMARY KEY (`idBA`),
+  ADD KEY `fk_iduser_bankaccount` (`idUser`);
+
+--
+-- Indices de la tabla `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`idUser`),
+  ADD UNIQUE KEY `unique_dni` (`DNI`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `bankaccounts`
+--
+ALTER TABLE `bankaccounts`
+  MODIFY `idBA` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `users`
+--
+ALTER TABLE `users`
+  MODIFY `idUser` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- Restricciones para tablas volcadas
@@ -80,14 +110,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Filtros para la tabla `bankaccounts`
 --
 ALTER TABLE `bankaccounts`
-  ADD CONSTRAINT `fk_iduser_bankaccount` FOREIGN KEY (`idUser`) REFERENCES `users` (`idUser`) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
---
--- Filtros para la tabla `transactions`
---
-ALTER TABLE `transactions`
-  ADD CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`idAcountEnd`) REFERENCES `bankaccounts` (`idBA`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `transactions_ibfk_2` FOREIGN KEY (`idAcountStart`) REFERENCES `bankaccounts` (`idBA`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `fk_iduser_bankaccount` FOREIGN KEY (`idUser`) REFERENCES `users` (`idUser`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
