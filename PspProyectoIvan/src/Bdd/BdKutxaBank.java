@@ -163,6 +163,9 @@ public class BdKutxaBank {
     }
 
     public static boolean  IgresarDinero(String ibanOrigen,String ibanDestino, Double ingreso) throws SQLException {
+        if (ibanOrigen.equals(ibanDestino)){
+            return false;
+        }
         Connection bd = conection();
         try {
 

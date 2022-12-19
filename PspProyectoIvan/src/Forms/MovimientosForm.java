@@ -1,6 +1,7 @@
 package Forms;
 
 import Clases.Acount;
+import Clases.Seguridad;
 import Clases.User;
 
 import javax.swing.*;
@@ -112,7 +113,7 @@ public class MovimientosForm  extends JFrame{
                     ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
 
                     os.writeObject("ingreso");
-
+                    Seguridad sgr =  (Seguridad) is.readObject();
 
                     Pattern pattern1 = Pattern.compile("[a-zA-Z0-9]+", Pattern.CASE_INSENSITIVE);
                     Matcher matcher1 = pattern1.matcher(textFieldIbanDestino.getText());
@@ -124,9 +125,9 @@ public class MovimientosForm  extends JFrame{
 
                     if (matchFound && matchFound2){
 
-                        os.writeObject(comboBoxCuentas.getSelectedItem());
-                        os.writeObject(textFieldIbanDestino.getText());
-                        os.writeObject(Double.parseDouble(formattedTextFieldSaldoIngreso.getText()));
+                        os.writeObject(sgr.encriptar(comboBoxCuentas.getSelectedItem().toString()));
+                        os.writeObject(sgr.encriptar(textFieldIbanDestino.getText()));
+                        os.writeObject(sgr.encriptar(formattedTextFieldSaldoIngreso.getText()));
                         boolean response = (boolean) is.readObject();
 
                         if (response){

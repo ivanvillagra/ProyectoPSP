@@ -1,12 +1,15 @@
 package Server;
 
 import Clases.Acount;
+import Clases.Seguridad;
 import Clases.User;
 
 import java.io.*;
 import java.net.Socket;
+import java.nio.charset.Charset;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Random;
 
 import Bdd.BdKutxaBank;
 public class threadPetitions extends Thread{
@@ -52,9 +55,12 @@ public class threadPetitions extends Thread{
                    break;
 
                case "ingreso":
-                   String ibanOrigen = (String) is.readObject() ;
-                   String ibanDestino = (String) is.readObject();
-                   Double ingreso = (Double) is.readObject()  ;
+                   Seguridad sgr = new Seguridad();
+                   sgr.addKey(generarStringClave());
+                   os.writeObject(sgr);
+                   String ibanOrigen =  sgr.desencriptar((String) is.readObject()) ;
+                   String ibanDestino =  sgr.desencriptar((String) is.readObject()) ;
+                   Double ingreso = Double.parseDouble(sgr.desencriptar((String) is.readObject()))  ;
                    Ingreso(ibanOrigen,ibanDestino,ingreso,os);
                     break;
            }
@@ -102,5 +108,13 @@ public class threadPetitions extends Thread{
        os.writeObject(response);
 
    }
+
+    public String generarStringClave() {
+        byte[] array = new byte[7]; // length is bounded by 7
+        new Random().nextBytes(array);
+        String generatedString = new String(array, Charset.forName("UTF-8"));
+
+        return generatedString;
+    }
 
 }
