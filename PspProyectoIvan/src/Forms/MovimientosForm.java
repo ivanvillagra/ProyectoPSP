@@ -4,7 +4,6 @@ import Clases.Acount;
 import Clases.User;
 
 import javax.swing.*;
-import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -12,7 +11,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
-import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class MovimientosForm  extends JFrame{
@@ -24,8 +24,8 @@ public class MovimientosForm  extends JFrame{
     private JTextField textFieldSaldoTotal;
     private JButton buttonIngresar;
     private JFormattedTextField formattedTextFieldSaldoIngreso;
-    private JFormattedTextField formattedTextField1;
-    private JButton btnRetirar;
+    private JTextField textFieldIbanDestino;
+    private JButton buttonUpdate;
 
     public static void  getAcounts() {
         Socket socket = null;
@@ -62,6 +62,7 @@ public class MovimientosForm  extends JFrame{
         }
     }
     public  void llenarCombox(){
+        comboBoxCuentas.removeAllItems();
         userLogin.acountList().forEach(acount -> {
             comboBoxCuentas.addItem(acount.iban());
         });
@@ -71,6 +72,11 @@ public class MovimientosForm  extends JFrame{
     public void PintarDatosPrimeraVez(){
         textFieldSaldoTotal.setText(String.valueOf(userLogin.acountList().get(0).balance()));
     }
+
+    public void LimpiarCampos(){
+        formattedTextFieldSaldoIngreso.setText("");
+        textFieldIbanDestino.setText("");
+    };
 
     public MovimientosForm(User userLogin) {
         this.userLogin = userLogin;
@@ -94,12 +100,66 @@ public class MovimientosForm  extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
 
+                Socket socket = null;
+                try {
+                    socket = new Socket("localhost",6868);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                try {
+                    assert socket != null;
+                    ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+                    ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
+
+                    os.writeObject("ingreso");
+
+
+                    Pattern pattern1 = Pattern.compile("[a-zA-Z0-9]+", Pattern.CASE_INSENSITIVE);
+                    Matcher matcher1 = pattern1.matcher(textFieldIbanDestino.getText());
+                    boolean matchFound = matcher1.find();
+
+                    Pattern pattern2 = Pattern.compile("[0-9]+", Pattern.CASE_INSENSITIVE);
+                    Matcher matcher2 = pattern2.matcher(formattedTextFieldSaldoIngreso.getText());
+                    boolean matchFound2 = matcher2.find();
+
+                    if (matchFound && matchFound2){
+
+                        os.writeObject(comboBoxCuentas.getSelectedItem());
+                        os.writeObject(textFieldIbanDestino.getText());
+                        os.writeObject(Double.parseDouble(formattedTextFieldSaldoIngreso.getText()));
+                        boolean response = (boolean) is.readObject();
+
+                        if (response){
+                            socket.close();
+                            getAcounts();
+                            llenarCombox();
+                        }else {
+
+                            JOptionPane.showMessageDialog(null,"Error  al  ingresar");
+                        }
+                    }else {
+
+                        JOptionPane.showMessageDialog(null,"Error al ingresar, datos erroneos");
+                    }
+
+                } catch (IOException | ClassNotFoundException ex) {
+                    ex.printStackTrace();
+                }
+                try {
+                    socket.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                LimpiarCampos();
+
             }
         });
-        btnRetirar.addActionListener(new ActionListener() {
+
+        buttonUpdate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                getAcounts();
+                llenarCombox();
             }
         });
     }

@@ -162,16 +162,40 @@ public class BdKutxaBank {
         }
     }
 
-    public boolean  IngresarDinero(double dinero){
+    public static boolean  IgresarDinero(String ibanOrigen,String ibanDestino, Double ingreso) throws SQLException {
         Connection bd = conection();
+        try {
 
-        return false;
+            String query = " UPDATE bankaccounts set balance = balance - ? WHERE iban  =  ? ";
+            assert bd != null;
+            PreparedStatement preparedStmt = bd.prepareStatement(query);
+            preparedStmt.setDouble (1, ingreso);
+            preparedStmt.setString (2, ibanOrigen );
+
+            preparedStmt.executeUpdate();
+
+
+
+            query = " UPDATE bankaccounts set balance = balance + ? WHERE iban  =  ? ";
+            PreparedStatement preparedStmt2 = bd.prepareStatement(query);
+            preparedStmt2.setDouble (1, ingreso);
+            preparedStmt2.setString (2, ibanDestino);
+
+            preparedStmt2.executeUpdate();
+
+
+            bd.close();
+            return true;
+
+        }catch (Exception ex){
+            bd.close();
+            return false;
+
+        }
+
     }
 
-    public boolean  RetirarDinero(){
 
-        return true;
-    }
 
 
     public static List<Acount> acountListOfUser(User user) throws SQLException {

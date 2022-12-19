@@ -51,6 +51,12 @@ public class threadPetitions extends Thread{
                    getAcountsOfUser(userAcount,os);
                    break;
 
+               case "ingreso":
+                   String ibanOrigen = (String) is.readObject() ;
+                   String ibanDestino = (String) is.readObject();
+                   Double ingreso = (Double) is.readObject()  ;
+                   Ingreso(ibanOrigen,ibanDestino,ingreso,os);
+                    break;
            }
 
        } catch (IOException e) {
@@ -89,6 +95,12 @@ public class threadPetitions extends Thread{
        }else {
            os.writeObject(null);
        }
+   }
+
+   public static void Ingreso(String ibanOrigen,String ibanDestino,Double ingreso,ObjectOutputStream os) throws IOException, SQLException {
+       boolean response =  BdKutxaBank.IgresarDinero(ibanOrigen,ibanDestino,ingreso);
+       os.writeObject(response);
+
    }
 
 }
