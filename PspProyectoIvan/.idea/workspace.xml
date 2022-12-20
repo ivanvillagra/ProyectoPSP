@@ -37,7 +37,7 @@
     "UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH": "256",
     "WebServerToolWindowFactoryState": "false",
     "jdk.selected.JAVA_MODULE": "openjdk-19",
-    "last_opened_file_path": "C:/Users/Gilo/Pictures/PspProyectoIvan",
+    "last_opened_file_path": "C:/Users/Gilo/Documents/repositorios/ProyectoPSP/PspProyectoIvan/lib/mysql-connector-java-8.0.30.jar",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -108,6 +108,7 @@
       <workItem from="1671559894819" duration="2205000" />
       <workItem from="1671562993907" duration="2700000" />
       <workItem from="1671567814153" duration="420000" />
+      <workItem from="1671569185319" duration="405000" />
     </task>
     <servers />
   </component>
