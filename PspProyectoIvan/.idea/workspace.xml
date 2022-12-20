@@ -37,13 +37,13 @@
     "UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH": "256",
     "WebServerToolWindowFactoryState": "false",
     "jdk.selected.JAVA_MODULE": "openjdk-19",
-    "last_opened_file_path": "C:/Users/Gilo/Documents/repositorios/ProyectoPSP",
+    "last_opened_file_path": "C:/Users/Gilo/Downloads/mysql-connector-java-8.0.30.jar",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "project.structure.last.edited": "Libraries",
-    "project.structure.proportion": "0.0",
+    "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
     "vue.rearranger.settings.migration": "true"
   }
@@ -54,7 +54,7 @@
     </key>
   </component>
   <component name="RunManager" selected="Application.indexBankForm">
-    <configuration name="Server" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="Server" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Server.Server" />
       <module name="PspProyectoIvan" />
       <extension name="coverage">
@@ -67,7 +67,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="indexBankForm" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="indexBankForm" type="Application" factoryName="Application" singleton="false" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Forms.indexBankForm" />
       <module name="PspProyectoIvan" />
       <extension name="coverage">
@@ -80,12 +80,16 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Application.indexBankForm" />
-        <item itemvalue="Application.Server" />
-      </list>
-    </recent_temporary>
+    <configuration name="Unnamed" type="CompoundRunConfigurationType">
+      <toRun name="Server" type="Application" />
+      <toRun name="indexBankForm" type="Application" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Application.indexBankForm" />
+      <item itemvalue="Application.Server" />
+      <item itemvalue="Compound.Unnamed" />
+    </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -100,7 +104,9 @@
       <workItem from="1669831388362" duration="8570000" />
       <workItem from="1670964539505" duration="703000" />
       <workItem from="1671040468505" duration="10647000" />
-      <workItem from="1671559266241" duration="306000" />
+      <workItem from="1671559266241" duration="606000" />
+      <workItem from="1671559894819" duration="2205000" />
+      <workItem from="1671562993907" duration="986000" />
     </task>
     <servers />
   </component>
@@ -117,5 +123,44 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Forms/RegisterForm.java</url>
+          <line>45</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Server/threadPetitions.java</url>
+          <line>40</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Bdd/BdKutxaBank.java</url>
+          <line>22</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/Server/threadPetitions.java</url>
+          <line>78</line>
+          <properties class="Server.threadPetitions" method="Registro">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/Bdd/BdKutxaBank.java</url>
+          <line>35</line>
+          <properties class="Bdd.BdKutxaBank" method="InsertUser">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
